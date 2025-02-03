@@ -14,13 +14,44 @@ export class Game {
         // Add objects to scene
         this.renderer.addObject(this.player.mesh);
         this.enemies.forEach(enemy => this.renderer.addObject(enemy.mesh));
+        
+        this.keysPressed = {}; 
+
+        window.addEventListener('keydown', (event) => {
+        this.keysPressed[event.key] = true;
+        });
+
+        window.addEventListener('keyup', (event) => {
+        delete this.keysPressed[event.key];
+        });
     }
     start() {
         this.dungeon.generate();
         requestAnimationFrame(this.gameLoop.bind(this));
     }
+    
     gameLoop(currentTime) {
-        let delta = (currentTime - this.lastFrame) / 1000;
+        let delta = {x, y, z};
+
+        if (this.keysPressed['d']) {
+            delta.x + 1;
+            }
+        
+        if (this.keysPressed['a']) {
+            delta.x - 1;
+            }
+
+        if (this.keysPressed['w']) {
+            delta.y + 1;
+            }
+
+        if (this.keysPressed['d']) {
+            delta.y - 1;
+            }  
+
+        if (this.keysPressed['space']) {
+            delta.z + 1;
+            }  
         this.lastFrame = currentTime;
         this.player.update(delta);
         this.enemies.forEach(enemy => enemy.update(delta, this.player));

@@ -11,7 +11,8 @@ export class Player {
     }
     update(delta) {
         console.log("Player moving", delta);
-        this.mesh.position.x += delta;
-        this.mesh.position.z += delta;
+        this.mesh.position.x += delta.x;
+        this.mesh.position.y += delta.y;
+        this.mesh.position.z += delta.z;
     }
 }
