@@ -42,11 +42,11 @@ export class Game {
             }
 
         if (this.keysPressed['w']) {
-            delta.z += 1;
+            delta.z -= 1;
             }
 
         if (this.keysPressed['s']) {
-            delta.z -= 1;
+            delta.z += 1;
             }  
 
         if (this.keysPressed['space']) {
