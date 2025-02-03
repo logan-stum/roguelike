@@ -31,7 +31,7 @@ export class Game {
     }
     
     gameLoop(currentTime) {
-        let delta = {x, y, z};
+        const delta = {x:0, y:0, z:0};
 
         if (this.keysPressed['d']) {
             delta.x + 1;
