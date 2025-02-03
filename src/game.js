@@ -24,6 +24,7 @@ export class Game {
         this.lastFrame = currentTime;
         this.player.update(delta);
         this.enemies.forEach(enemy => enemy.update(delta, this.player));
+        this.renderer.updateCamera(this.player);
         this.renderer.render();
         requestAnimationFrame(this.gameLoop.bind(this));
     }
