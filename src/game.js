@@ -42,15 +42,15 @@ export class Game {
             }
 
         if (this.keysPressed['w']) {
-            delta.y += 1;
+            delta.z += 1;
             }
 
-        if (this.keysPressed['d']) {
-            delta.y -= 1;
+        if (this.keysPressed['s']) {
+            delta.z -= 1;
             }  
 
         if (this.keysPressed['space']) {
-            delta.z += 1;
+            delta.x += 1;
             }  
         this.lastFrame = currentTime;
         this.player.update(delta);
