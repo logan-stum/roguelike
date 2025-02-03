@@ -2,7 +2,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.m
 
 export class Player {
     constructor() {
-        this.position = { x: 0, y: 0 };
+        this.position = {x: 0, y: 0, z: 0};
         this.mesh = new THREE.Mesh(
             new THREE.SphereGeometry(0.5, 16, 16),
             new THREE.MeshStandardMaterial({ color: 0x00ff00 })
@@ -10,9 +10,10 @@ export class Player {
         this.mesh.position.set(this.position.x, 0.5, this.position.y);
     }
     update(delta) {
-        console.log("Player moving", delta);
-        this.mesh.position.x += delta.x;
-        this.mesh.position.y += delta.y;
-        this.mesh.position.z += delta.z;
+        this.position.x += delta.x;
+        this.position.y += delta.y;
+        this.position.z += delta.z;
+        // Update the player's mesh or visual representation based on position changes
+        this.mesh.position.set(this.position.x, this.position.y, this.position.z);
     }
 }

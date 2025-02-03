@@ -34,23 +34,23 @@ export class Game {
         const delta = {x:0, y:0, z:0};
 
         if (this.keysPressed['d']) {
-            delta.x + 1;
+            delta.x += 1;
             }
         
         if (this.keysPressed['a']) {
-            delta.x - 1;
+            delta.x -= 1;
             }
 
         if (this.keysPressed['w']) {
-            delta.y + 1;
+            delta.y += 1;
             }
 
         if (this.keysPressed['d']) {
-            delta.y - 1;
+            delta.y -= 1;
             }  
 
         if (this.keysPressed['space']) {
-            delta.z + 1;
+            delta.z += 1;
             }  
         this.lastFrame = currentTime;
         this.player.update(delta);
