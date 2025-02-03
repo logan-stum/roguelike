@@ -24,6 +24,9 @@ export class Renderer {
         floor.rotation.x = -Math.PI / 2;
         this.scene.add(floor);
     }
+    addObject(object) {
+        this.scene.add(object);
+    }
     render() {
         this.renderer.render(this.scene, this.camera);
     }
