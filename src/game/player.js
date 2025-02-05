@@ -34,11 +34,42 @@ export class Player {
         document.body.appendChild(this.healthBar);
     }
 
+    createGameOverScreen() {
+        this.gameOverScreen = document.createElement("div");
+        this.gameOverScreen.style.position = "absolute";
+        this.gameOverScreen.style.top = "50%";
+        this.gameOverScreen.style.left = "50%";
+        this.gameOverScreen.style.transform = "translate(-50%, -50%)";
+        this.gameOverScreen.style.fontSize = "48px";
+        this.gameOverScreen.style.color = "red";
+        this.gameOverScreen.style.fontWeight = "bold";
+        this.gameOverScreen.style.textAlign = "center";
+        this.gameOverScreen.style.display = "none"; // ✅ Hidden initially
+        this.gameOverScreen.innerHTML = "GAME OVER<br><button id='restartBtn'>Restart</button>";
+        document.body.appendChild(this.gameOverScreen);
+    
+        // ✅ Add Restart Button Functionality
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            location.reload(); // ✅ Reloads the game
+        });
+    }
+    
     takeDamage(amount) {
         this.health -= amount;
-        if (this.health < 0) this.health = 0; // ✅ Prevent negative health
+        if (this.health < 0) this.health = 0;
         this.updateHealthBar();
+    
+        if (this.health === 0) {
+            this.gameOver(); // ✅ Call game over when HP is 0
+        }
     }
+    
+    gameOver() {
+        this.gameOverScreen.style.display = "block"; // ✅ Show "Game Over"
+        window.removeEventListener('keydown', this.keydownHandler);
+        window.removeEventListener('keyup', this.keyupHandler);
+    }
+    
 
     updateHealthBar() {
         const percentage = this.health / 100;

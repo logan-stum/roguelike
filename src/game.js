@@ -36,10 +36,11 @@ export class Game {
     }
 
     gameLoop(currentTime) {
+        if (this.player.health <= 0) return;
         const delta = { x: 0, y: 0, z: 0 };
     
-        if (this.keysPressed['w']) delta.y += 1;
-        if (this.keysPressed['s']) delta.y -= 1;
+        if (this.keysPressed['w']) delta.y -= 1;
+        if (this.keysPressed['s']) delta.y += 1;
         if (this.keysPressed['a']) delta.x -= 1;
         if (this.keysPressed['d']) delta.x += 1;
         if (this.keysPressed[' ']) delta.z += 1;
@@ -57,7 +58,7 @@ export class Game {
             );
     
             if (distance < 1.5) { // ✅ Enemy is close enough to hit
-                this.player.takeDamage(5); // ✅ Deal 5 damage to the player
+                this.player.takeDamage(2); // ✅ Deal 5 damage to the player
             }
         });
     
