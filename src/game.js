@@ -36,8 +36,8 @@ export class Game {
         const delta = { x: 0, y: 0, z: 0 };
 
         // ✅ WASD Controls
-        if (this.keysPressed['w']) delta.y += 1;  // Move forward
-        if (this.keysPressed['s']) delta.y -= 1;  // Move backward
+        if (this.keysPressed['w']) delta.y -= 1;  // Move forward
+        if (this.keysPressed['s']) delta.y += 1;  // Move backward
         if (this.keysPressed['a']) delta.x -= 1;  // Move left
         if (this.keysPressed['d']) delta.x += 1;  // Move right
         if (this.keysPressed[' ']) delta.z += 1;  // Jump (Space bar)
