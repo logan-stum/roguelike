@@ -8,7 +8,7 @@ export class Enemy {
         this.attackRange = 1.5;
         this.attackCooldown = 2000; // 2 seconds
         this.lastAttackTime = 0; // Track last attack time
-        this.health = 5;
+        this.health = 20;
     }
 
     createMesh() {
@@ -75,8 +75,20 @@ export class Enemy {
     takeDamage(amount) {
         this.health -= amount;
         if (this.health <= 0) {
-            this.die();
+            this.despawn();
         }
     }
+    
+    despawn() {
+        if (this.mesh && this.mesh.parent) {
+            this.mesh.parent.remove(this.mesh); // ✅ Remove from scene
+        }
+    
+        const enemyIndex = game.enemies.indexOf(this);
+        if (enemyIndex > -1) {
+            game.enemies.splice(enemyIndex, 1); // ✅ Remove from enemy list
+        }
+    }
+    
     
 }
