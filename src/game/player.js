@@ -1,4 +1,4 @@
-const THREE = window.THREE; 
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.module.js";
 
 export class Player {
     constructor() {
