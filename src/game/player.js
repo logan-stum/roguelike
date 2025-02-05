@@ -9,10 +9,16 @@ export class Player {
         this.gravity = -0.01;
         this.isJumping = false;
 
-        this.health = 100; // ✅ Player starts with 100 HP
+        this.health = 100;
+        this.attackCooldown = 500; // 0.5s cooldown
+        this.lastAttackTime = 0;
+    
+        window.addEventListener("click", () => this.attack());
+
+        this.health = 100; 
         this.mesh = this.createMesh();
-        this.createHealthBar(); // ✅ Create health bar UI
-        this.createGameOverScreen(); // ✅ FIX: Make sure the game over screen is created
+        this.createHealthBar(); 
+        this.createGameOverScreen(); 
 
     }
 
@@ -105,5 +111,40 @@ export class Player {
         this.position.z += this.velocity.z;
 
         this.mesh.position.set(this.position.x, this.position.y, this.position.z);
+    }
+
+    applyKnockback(enemyPosition) {
+        const dx = this.position.x - enemyPosition.x;
+        const dz = this.position.z - enemyPosition.z;
+        const distance = Math.sqrt(dx * dx + dz * dz);
+    
+        this.position.x += (dx / distance) * 0.5; // ✅ Push back slightly
+        this.position.z += (dz / distance) * 0.5;
+    }
+
+    attack() {
+        const currentTime = performance.now();
+        if (currentTime - this.lastAttackTime < this.attackCooldown) return; // ✅ Prevent spam
+    
+        this.lastAttackTime = currentTime;
+        this.swingArmAnimation();
+    
+        // ✅ Check for nearby enemies
+        game.enemies.forEach(enemy => {
+            const distance = Math.hypot(this.position.x - enemy.position.x, this.position.z - enemy.position.z);
+            if (distance < 2) { 
+                enemy.takeDamage(10); // ✅ Deal damage
+                enemy.applyKnockback(this.position); // ✅ Knockback effect
+            }
+        });
+    }
+    swingArmAnimation() {
+        let direction = 1;
+        const swingInterval = setInterval(() => {
+            this.mesh.rotation.z += direction * 0.1;
+            if (Math.abs(this.mesh.rotation.z) > 0.5) direction *= -1;
+        }, 50);
+    
+        setTimeout(() => clearInterval(swingInterval), 300); // ✅ Stops after 0.3s
     }
 }

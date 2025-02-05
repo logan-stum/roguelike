@@ -8,6 +8,7 @@ export class Enemy {
         this.attackRange = 1.5;
         this.attackCooldown = 2000; // 2 seconds
         this.lastAttackTime = 0; // Track last attack time
+        this.health = 5;
     }
 
     createMesh() {
@@ -38,15 +39,44 @@ export class Enemy {
 
     attack(player) {
         const currentTime = performance.now();
-
+    
         if (currentTime - this.lastAttackTime > this.attackCooldown) {
-            this.lastAttackTime = currentTime; // ✅ Reset cooldown
-            this.mesh.material.color.set(0xffff00); // ✅ Turn yellow to show attacking
-
+            this.lastAttackTime = currentTime;
+            this.swingArmAnimation();
+            
             setTimeout(() => {
-                player.takeDamage(10); // ✅ Deal damage after delay
-                this.mesh.material.color.set(0xff0000); // ✅ Turn back to red after attack
-            }, 500); // ✅ 0.5-second attack delay
+                player.takeDamage(this.attackDamage); // ✅ Deals damage after animation
+                player.applyKnockback(this.position); // ✅ Apply knockback
+            }, 500);
         }
     }
+    
+    swingArmAnimation() {
+        if (!this.arm) return; // ✅ Ensure enemy has an arm
+    
+        let direction = 1;
+        const swingInterval = setInterval(() => {
+            this.arm.rotation.z += direction * 0.1;
+            if (Math.abs(this.arm.rotation.z) > 0.5) direction *= -1;
+        }, 50);
+    
+        setTimeout(() => clearInterval(swingInterval), 500); // ✅ Stops after 0.5s
+    }
+
+    applyKnockback(playerPosition) {
+        const dx = this.position.x - playerPosition.x;
+        const dz = this.position.z - playerPosition.z;
+        const distance = Math.sqrt(dx * dx + dz * dz);
+    
+        this.position.x += (dx / distance) * 0.5; // ✅ Knockback effect
+        this.position.z += (dz / distance) * 0.5;
+    }
+    
+    takeDamage(amount) {
+        this.health -= amount;
+        if (this.health <= 0) {
+            this.die();
+        }
+    }
+    
 }
