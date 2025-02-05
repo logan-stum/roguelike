@@ -17,43 +17,33 @@ export class Game {
         
         this.keysPressed = {}; 
 
+        // ✅ Event Listeners for Key Presses
         window.addEventListener('keydown', (event) => {
-        this.keysPressed[event.key] = true;
+            this.keysPressed[event.key.toLowerCase()] = true;
         });
 
         window.addEventListener('keyup', (event) => {
-        delete this.keysPressed[event.key];
+            delete this.keysPressed[event.key.toLowerCase()];
         });
     }
+
     start() {
         this.dungeon.generate();
         requestAnimationFrame(this.gameLoop.bind(this));
     }
-    
+
     gameLoop(currentTime) {
-        const delta = {x:0, y:0, z:0};
+        const delta = { x: 0, y: 0, z: 0 };
 
-        if (this.keysPressed['d']) {
-            delta.x += 1;
-            }
-        
-        if (this.keysPressed['a']) {
-            delta.x -= 1;
-            }
+        // ✅ WASD Controls
+        if (this.keysPressed['w']) delta.y += 1;  // Move forward
+        if (this.keysPressed['s']) delta.y -= 1;  // Move backward
+        if (this.keysPressed['a']) delta.x -= 1;  // Move left
+        if (this.keysPressed['d']) delta.x += 1;  // Move right
+        if (this.keysPressed[' ']) delta.z += 1;  // Jump (Space bar)
 
-        if (this.keysPressed['w']) {
-            delta.z -= 1;
-            }
-
-        if (this.keysPressed['s']) {
-            delta.z += 1;
-            }  
-
-        if (this.keysPressed['space']) {
-            delta.x += 1;
-            }  
         this.lastFrame = currentTime;
-        this.player.update(delta);
+        this.player.update(delta);  
         this.enemies.forEach(enemy => enemy.update(delta, this.player));
         this.renderer.updateCamera(this.player);
         this.renderer.render();
