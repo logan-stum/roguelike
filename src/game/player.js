@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export class Player {
     constructor() {
         this.position = { x: 0, y: 0, z: 0 };
