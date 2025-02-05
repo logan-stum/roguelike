@@ -30,9 +30,13 @@ export class Player {
         }
 
         this.velocity.y += this.gravity;
-        if (this.position.y <= 0) { 
+
+        if (this.position.y + this.velocity.y < 0) { 
             this.position.y = 0;
-            this.isJumping = false;
+            this.velocity.y = 0; // Stop downward movement
+            this.isJumping = false; // Allow jumping again
+        } else {
+            this.position.y += this.velocity.y; // Apply gravity
         }
 
         this.position.x += this.velocity.x;
