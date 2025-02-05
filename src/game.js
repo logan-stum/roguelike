@@ -37,19 +37,33 @@ export class Game {
 
     gameLoop(currentTime) {
         const delta = { x: 0, y: 0, z: 0 };
-
-        // ✅ WASD Controls
-        if (this.keysPressed['w']) delta.y -= 1;  // Move forward
-        if (this.keysPressed['s']) delta.y += 1;  // Move backward
-        if (this.keysPressed['a']) delta.x -= 1;  // Move left
-        if (this.keysPressed['d']) delta.x += 1;  // Move right
-        if (this.keysPressed[' ']) delta.z += 1;  // Jump (Space bar)
-
+    
+        if (this.keysPressed['w']) delta.y += 1;
+        if (this.keysPressed['s']) delta.y -= 1;
+        if (this.keysPressed['a']) delta.x -= 1;
+        if (this.keysPressed['d']) delta.x += 1;
+        if (this.keysPressed[' ']) delta.z += 1;
+    
         this.lastFrame = currentTime;
-        this.player.update(delta);  
-        this.enemies.forEach(enemy => enemy.update(delta, this.player));
+        this.player.update(delta);
+    
+        this.enemies.forEach(enemy => {
+            enemy.update(delta, this.player);
+            
+            // ✅ Check if the enemy is close enough to damage the player
+            const distance = Math.sqrt(
+                (enemy.position.x - this.player.position.x) ** 2 + 
+                (enemy.position.z - this.player.position.z) ** 2
+            );
+    
+            if (distance < 1.5) { // ✅ Enemy is close enough to hit
+                this.player.takeDamage(5); // ✅ Deal 5 damage to the player
+            }
+        });
+    
         this.renderer.updateCamera(this.player);
         this.renderer.render();
         requestAnimationFrame(this.gameLoop.bind(this));
     }
+    
 }
