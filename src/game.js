@@ -25,6 +25,25 @@ export class Game {
         window.addEventListener('keyup', (event) => {
             delete this.keysPressed[event.key.toLowerCase()];
         });
+        this.mouseSensitivity = 0.002;
+        this.yaw = 0; // Horizontal rotation
+        this.pitch = 0; // Vertical rotation
+
+        // Lock the mouse when clicking on the screen
+        window.addEventListener("click", () => {
+            document.body.requestPointerLock();
+        });
+
+        // Capture mouse movement
+        window.addEventListener("mousemove", (event) => {
+            if (document.pointerLockElement === document.body) {
+                this.yaw -= event.movementX * this.mouseSensitivity;
+                this.pitch -= event.movementY * this.mouseSensitivity;
+                this.pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.pitch)); // Limit up/down look
+                this.renderer.updateCameraRotation(this.yaw, this.pitch);
+            }
+        });
+
     }
 
     start() {

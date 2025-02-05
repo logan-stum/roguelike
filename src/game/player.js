@@ -14,30 +14,39 @@ export class Player {
         // Create and return a mesh (Three.js or other framework)
     }
 
-    update(delta) {
-        // Apply movement based on delta
-        this.velocity.x = delta.x * this.speed;
-        this.velocity.y = delta.y * this.speed;
+    update(delta, dungeon) {
+        const nextX = this.position.x + delta.x * this.speed;
+        const nextY = this.position.y + delta.y * this.speed;
 
-        // Apply jump logic
-        if (delta.z > 0 && !this.isJumping) {
-            this.velocity.z = this.jumpForce;
-            this.isJumping = true;
+        let isMoving = delta.x !== 0 || delta.y !== 0;
+    
+    // Play walking animation
+        if (isMoving && this.position.z === 0) {
+            this.mesh.playAnimation("walk");
+        } else if (!isMoving) {
+            this.mesh.playAnimation("idle");
         }
 
-        // Apply gravity
+        // Jump animation
+        if (delta.z > 0 && !this.isJumping) {
+            this.mesh.playAnimation("jump");
+        }
+        
+        // Check if next position is inside a wall
+        if (!dungeon.isWall(nextX, nextY)) {
+            this.position.x = nextX;
+            this.position.y = nextY;
+        }
+    
+        // Gravity & jumping
         this.velocity.z += this.gravity;
-        if (this.position.z <= 0) { // Prevent falling below ground
+        if (this.position.z <= 0) {
             this.position.z = 0;
             this.isJumping = false;
         }
-
-        // Update position
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
+        
         this.position.z += this.velocity.z;
-
-        // Update mesh position
         this.mesh.position.set(this.position.x, this.position.y, this.position.z);
     }
+    
 }

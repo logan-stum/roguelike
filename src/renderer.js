@@ -30,6 +30,11 @@ export class Renderer {
         this.camera.position.set(player.mesh.position.x, 5, player.mesh.position.z + 10);
         this.camera.lookAt(player.mesh.position);
     }
+    updateCameraRotation(yaw, pitch) {
+        this.camera.rotation.y = yaw;
+        this.camera.rotation.x = pitch;
+    }
+    
     render() {
         this.renderer.render(this.scene, this.camera);
     }
