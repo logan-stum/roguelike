@@ -12,6 +12,8 @@ export class Player {
         this.health = 100; // ✅ Player starts with 100 HP
         this.mesh = this.createMesh();
         this.createHealthBar(); // ✅ Create health bar UI
+        this.createGameOverScreen(); // ✅ FIX: Make sure the game over screen is created
+
     }
 
     createMesh() {
