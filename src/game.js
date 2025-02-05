@@ -8,7 +8,10 @@ export class Game {
         this.renderer = new Renderer();
         this.dungeon = new Dungeon();
         this.player = new Player();
-        this.enemies = [new Enemy(5, 0), new Enemy(-3, 0)];
+        this.enemies = [
+            new Enemy(this.player.position.x + 5, this.player.position.z + 5),
+            new Enemy(this.player.position.x - 3, this.player.position.z - 3)
+        ];
         this.lastFrame = performance.now();
 
         // Add objects to scene
