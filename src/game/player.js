@@ -11,7 +11,11 @@ export class Player {
     }
 
     createMesh() {
-        // Create and return a mesh (Three.js or other framework)
+        const geometry = new THREE.BoxGeometry(1, 2, 1); // 1x2x1 cube (like a character)
+        const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 }); // Green color
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set(this.position.x, this.position.y, this.position.z);
+        return mesh;
     }
 
     update(delta, dungeon) {
